@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo à página de Python para Data Science</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            width: 80%;
+            max-width: 600px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            cursor: pointer;
+            margin: 10px 0;
+            font-weight: bold;
+            color: #555;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .code {
+            display: none;
+            background-color: #f0f0f0;
+            color: #333;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Python para Data Science</h2>
+        
+        <div class="question" onclick="toggleCode('code1')">1 - Código: Bibliotecas necessárias</div>
+        <div id="code1" class="code">
+            <pre><code>
+                import pandas as pd
+                import numpy as np
+                import matplotlib.pyplot as plt
+            </code></pre>
+        </div>
+
+        <div class="question" onclick="toggleCode('code2')">2 - Código: Como ler um csv</div>
+        <div id="code2" class="code">
+            <pre><code>
+                df = pd.read_csv('Auto.csv')
+                df
+            </code></pre>
+        </div>
+
+        <div class="question" onclick="toggleCode('code3')">3 - Código: Como fazer um Histograma</div>
+        <div id="code3" class="code">
+            <pre><code>
+                min_age = 2024 - (1900 + np.max(df['year']))
+                max_age = 2024 - (1900 + np.min(df['year']))
+                
+                min_mpg = np.min(df['mpg'])
+                max_mpg = np.max(df['mpg'])
+                
+                hist = df.hist()
+                
+                plt.figure(figsize=(6, 4))
+                df['mpg'].hist(bins=20)
+                df['year'].hist(bins=10)
+                
+                print(f'min age: {min_age} | max age: {max_age} | min mpg: {min_mpg} | max mpg: {max_mpg}')
+            </code></pre>
+        </div>
+
+        <div class="question" onclick="toggleCode('code4')">4 - Código: Como fazer um BoxPlot</div>
+        <div id="code4" class="code">
+            <pre><code>
+                median_year = np.median(df['year'])
+                df['classificacao'] = pd.cut(df['year'],[0,median_year,np.max(df['year'])],labels=['velho','novo'])
+                
+                print(df['classificacao'].value_counts())
+                df[['name', 'year', 'classificacao']]    
+            </code></pre>
+        </div>
+
+        <div class="question" onclick="toggleCode('code5')">5 - Código: Como fazer um Comentário</div>
+        <div id="code5" class="code">
+            <pre><code>
+                plt.figure(figsize=(5, 5))
+                df[['mpg','classificacao']].boxplot(by='classificacao')
+
+                # Carros mais novos têm uma maior percentagem de carros com mais mpg a comparar com carros mais antigos ou seja têm melhor consumo 
+            </code></pre>
+        </div>
+
+        <div class="question" onclick="toggleCode('code6')">6 - Código: Como fazer um Gráfico de Dispersão</div>
+        <div id="code6" class="code">
+            <pre><code>
+                pd.plotting.scatter_matrix(df[['cylinders','mpg']])
+
+                # existe uma relação negativa perfeita entre mpg e cilindragem dos carros quanto maior a cilindragem do carro menor o mpg
+            </code></pre>
+        </div>
+
+        <div class="question" onclick="toggleCode('code7')">7 - Código: Como limpar dados de uma Coluna</div>
+        <div id="code7" class="code">
+            <pre><code>
+                cilindragem_8 = df.loc[df['cylinders'] == 8]
+                cilindragem_4 = df.loc[df['cylinders'] == 4]
+                
+                #for id,x in enumerate(df['horsepower']):
+                 # if not x.isnumeric():
+                  #  print(id,x)
+                
+                #df = df.drop([32,126,330,336,354]).reset_index()
+                #df['horsepower'] = df['horsepower'].astype(int) 
+                
+                pd.plotting.scatter_matrix(cilindragem_8[["horsepower", "mpg"]])
+            </code></pre>
+        </div>
+
+        <div class="question" onclick="toggleCode('code8')">8 - Código: Como Limpar versão 2</div>
+        <div id="code8" class="code">
+            <pre><code>
+                pd.plotting.scatter_matrix(cilindragem_4[["horsepower", "mpg"]])
+
+                # horsepower com 8 cilindros continua com uma relação negativa perfeita com o mpg porem o horsepower com 4 cilindros aparenta ser uma relaçãnegativa não sendo perfeita
+            </code></pre>
+        </div>
+
+        <div class="question" onclick="toggleCode('code9')">9 - Código: Como mudar labels de um box plot</div>
+        <div id="code9" class="code">
+            <pre><code>
+                plt.figure(figsize=(10, 6))
+                df[['origin','mpg']].replace({'origin': {1: 'American', 2: 'European', 3: 'Japanese'}}).boxplot(by='origin')
+                
+                # O fabricante com carros com melhor consumo é o japanese
+            </code></pre>
+        </div>
+    </div>
+
+    <script>
+        function toggleCode(id) {
+            const codeElement = document.getElementById(id);
+            if (codeElement.style.display === "none" || codeElement.style.display === "") {
+                codeElement.style.display = "block";
+            } else {
+                codeElement.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
